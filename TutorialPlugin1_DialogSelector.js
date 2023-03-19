@@ -1,5 +1,5 @@
-/*
-* @pluginDesc This is the first plugin for the plugin tutorial series
+/*:
+* @plugindesc This is the first plugin for the plugin tutorial series
 * @author LMPGames
 *
 *
