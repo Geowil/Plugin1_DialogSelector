@@ -1,0 +1,1 @@
+This is the repo for the first plugin tutorial for the RPG Maker MV Plugin Tutorial series
