@@ -46,3 +46,9 @@
 *
 * https://github.com/Geowil/Plugin1_DialogSelector
 */
+
+var tutorial_DialogSelectorParams = PluginManager.parameters("TutorialPlugin1_DialogSelector");
+var enableDialogSystem = (tutorial_DialogSelectorParams["Enable Dialog System"] == "true");
+var textVariableId = parseInt(tutorial_DialogSelectorParams["Text Variable"]);
+var dialogList = JSON.parse(tutorial_DialogSelectorParams["Dialog List"]);
+var defaultDialog = tutorial_DialogSelectorParams["Default Dialog"];
