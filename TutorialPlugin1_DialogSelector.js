@@ -49,9 +49,19 @@
 
 var tutorial_DialogSelectorParams = PluginManager.parameters("TutorialPlugin1_DialogSelector");
 var enableDialogSystem = (tutorial_DialogSelectorParams["Enable Dialog System"] == "true");
-var textVariableId = parseInt(tutorial_DialogSelectorParams["Text Variable"]);
+var textVariableId = parseInt(tutorial_DialogSelectorParams["Text Game Variable"]);
 var dialogList = JSON.parse(tutorial_DialogSelectorParams["Dialog List"]);
 var defaultDialog = tutorial_DialogSelectorParams["Default Dialog"];
+
+/* Data Manager Functions */
+var tutorialDialogSelectorDatabaseManager_IsMapLoaded = DataManager.isMapLoaded;
+DataManager.isMapLoaded = function() {
+	let mapIsLoaded = tutorialDialogSelectorDatabaseManager_IsMapLoaded.call(this);
+	if (mapIsLoaded) {
+		$gameSystem.toggleDialogSystem(enableDialogSystem);
+	}
+	return mapIsLoaded;
+};
 
 /* Plugin Commands */
 var tutorialDialogSelectorGameInterpreter_pluginCommand = Game_Interpreter.prototype.pluginCommand;
@@ -80,7 +90,7 @@ Game_Interpreter.prototype.pluginCommand = function(command, args){
 
 
 /* Game System Functions */
-Game_System.prototype.toggleDialogSystem = function(dialogSystemEnabled) {
+Game_System.prototype.toggleDialogSystem = function(dialogSystemEnabled){
 	let bSystemEnabled = false;
 	if (dialogSystemEnabled.constructor == String) {
 		dialogSystemEnabled = dialogSystemEnabled.toLowerCase();
@@ -89,6 +99,7 @@ Game_System.prototype.toggleDialogSystem = function(dialogSystemEnabled) {
 	switch(dialogSystemEnabled) {
 		case 1:
 		case "true":
+		case true:
 			bSystemEnabled = true;
 			break;
 
@@ -99,18 +110,14 @@ Game_System.prototype.toggleDialogSystem = function(dialogSystemEnabled) {
 	this.bDialogSystemEnabled = bSystemEnabled;
 }
 
-Game_System.prototype.isDialogSystemEnabled = function() {
+Game_System.prototype.isDialogSystemEnabled = function(){
 	return this.bDialogSystemEnabled == true;
 }
 
-Game_System.prototype.setDialogVariable() = function(index){
+Game_System.prototype.setDialogVariable = function(index){
 	if (dialogList.length == 0 || dialogList.length <= index) {
 		$gameVariables.setValue(textVariableId, defaultDialog);
 	} else {
 		$gameVariables.setValue(textVariableId, dialogList[index]);
 	}
 }
-
-
-/* Setup Function Calls */
-$gameSystem.isDialogSystemEnabled(enableDialogSystem);
