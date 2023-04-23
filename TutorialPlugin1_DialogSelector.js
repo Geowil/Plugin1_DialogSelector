@@ -27,9 +27,9 @@
 * @desc Contains all of the dialog settings
 *
 *
-* @param Dialog List
-* @desc List that stores all of the selectable dialog
-* @type text[]
+* @param Map Data
+* @desc A map containing npc dialog data per map
+* @type struct<MapData>[]
 * @default []
 * @parent Dialog Settings
 *
@@ -38,6 +38,7 @@
 * @desc The dialog returned when an invalid value is used in the GetDialog plugin command
 * @type text
 * @default Hello, \\P[0]
+* @parent Dialog Settings
 *
 *
 * @help
@@ -47,17 +48,48 @@
 * https://github.com/Geowil/Plugin1_DialogSelector
 */
 
+/*~struct~MapData:
+* @param Map Id
+* @desc Stores the ID of the map this data is related to
+* @type number
+* @min 1
+* @default 1
+*
+*
+* @param Npc List
+* @desc Stores npc data for npcs on the current map
+* @type struct<NpcData>[]
+* @default []
+*/
+
+/*~struct~NpcData:
+* @param Npc Id
+* @desc Stores the ID of the npc this data is related to
+* @type number
+* @min 1
+* @default 1
+*
+*
+* @param DialogList
+* @desc List of dialog for this npc
+* @type text[]
+* @default []
+*/
+
 var tutorial_DialogSelectorParams = PluginManager.parameters("TutorialPlugin1_DialogSelector");
 var enableDialogSystem = (tutorial_DialogSelectorParams["Enable Dialog System"] == "true");
 var textVariableId = parseInt(tutorial_DialogSelectorParams["Text Game Variable"]);
-var dialogList = JSON.parse(tutorial_DialogSelectorParams["Dialog List"]);
+var mapData = JSON.parse(tutorial_DialogSelectorParams["Map Data"]);
 var defaultDialog = tutorial_DialogSelectorParams["Default Dialog"];
+
+var parsedMapData = [];
 
 /* Data Manager Functions */
 var tutorialDialogSelectorDatabaseManager_IsMapLoaded = DataManager.isMapLoaded;
 DataManager.isMapLoaded = function() {
 	let mapIsLoaded = tutorialDialogSelectorDatabaseManager_IsMapLoaded.call(this);
 	if (mapIsLoaded) {
+		processMapData();
 		$gameSystem.toggleDialogSystem(enableDialogSystem);
 	}
 	return mapIsLoaded;
@@ -77,10 +109,10 @@ Game_Interpreter.prototype.pluginCommand = function(command, args){
 			if (matches.length > 1) {
 				$gameSystem.toggleDialogSystem(matches[1]);
 			}
-		} else if (command.match(/Tutorial.DialogSelector[ ]GetDialog[ ](\d+)/)) {
-			matches = ((/Tutorial.DialogSelector[ ]GetDialog[ ](\d+)/).exec(command) || []);
-			if (matches.length > 1) {
-				$gameSystem.setDialogVariable(matches[1]);
+		} else if (command.match(/Tutorial.DialogSelector[ ]GetDialog[ ](\d+)[ ](\d+)[ ](\d+)/)) {
+			matches = ((/Tutorial.DialogSelector[ ]GetDialog[ ](\d+)[ ](\d+)[ ](\d+)/).exec(command) || []);
+			if (matches.length > 3) {
+				$gameSystem.setDialogVariable(matches[1], matches[2], matches[3]);
 			}
 		}
 	} else {
@@ -114,10 +146,51 @@ Game_System.prototype.isDialogSystemEnabled = function(){
 	return this.bDialogSystemEnabled == true;
 }
 
-Game_System.prototype.setDialogVariable = function(index){
-	if (dialogList.length == 0 || dialogList.length <= index) {
-		$gameVariables.setValue(textVariableId, defaultDialog);
-	} else {
-		$gameVariables.setValue(textVariableId, dialogList[index]);
+Game_System.prototype.setDialogVariable = function(mapId, npcId, index){
+	$gameVariables.setValue(textVariableId, "Test");
+	if (mapId && mapId > 0 &&
+		$gameMap._mapId == mapId)
+	{
+		let map = parsedMapData.find(map => map && map["Map Id"] == mapId);
+		if (map) {
+			if (npcId && npcId > 0) {
+				let events = $gameMap._events;
+				let npcs = map["Npc List"];
+
+				let event = events.find(event => event && event._eventId == npcId);
+				let npc = npcs.find(npc => npc && npc["Npc Id"] == npcId);
+				if (event && npc) {
+					let dialogList = npc["Dialog List"];
+					if (dialogList.length == 0 || dialogList.length <= index) {
+						$gameVariables.setValue(textVariableId, defaultDialog);
+					} else {
+						$gameVariables.setValue(textVariableId, dialogList[index]);
+					}
+				}
+			}
+		}
 	}
+}
+
+/* Utility Functions */
+function processMapData(){
+	for (let data of mapData) {
+		parsedMapData.push(parseMapData(data));
+	}
+
+	console.log("Parsed Map Data: ", parsedMapData);
+}
+
+function parseMapData(dataString){
+	let data = JSON.parse(dataString);
+	for (let key in data) {
+		let value = data[key];
+		if (value.substr(0, 2) == '[\"' ||
+			value.substr(0, 2) == '{\"')
+		{
+			data[key] = parseMapData(value);
+		}
+	}
+
+	return data;
 }

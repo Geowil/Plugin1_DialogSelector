@@ -4,8 +4,8 @@ User Story:
 Requirements:
 	Write a plugin
 		Plugin Settings:
-			Dialog List
-				List of objects containing a Map Id and a list of Npc data.
+			Dialog Map
+				Map of objects containing a Map Id and a list of Npc data.
 				Npc data list is a list of objects containing the NPC Id and a list of that NPC's dialog
 				/*[
 					{
@@ -43,7 +43,7 @@ Requirements:
 			EnableDialogSystem
 				Parameters:
 					Boolean
-						True/False; 0/1
+						True/False
 				Allows the dialog system to be disabled or enabled from in-game through a plugin command.
 
 			GetDialog
