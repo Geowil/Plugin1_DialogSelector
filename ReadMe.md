@@ -54,5 +54,18 @@ This map or npc has not been configured in the Dialog Selector plugin configurat
 
 
 
+### Plugin Commands
+#### Tutorial.DialogSelector GetDialog <MapId> <NpcId>
+This plugin command allows you to call the GetDialog function to get the current valid dialog for an NPC on a specific map.  Note that Map Id must be the id of the current map the NPC event is currently on or the system will show the text set in the Unconfigured NPC Dialog setting.
+
+**Parameters**
+- List Item 1
+  - Sublist Item 1
+- List Item 2
+- List Item 3
+  - Sublist Item 2
+    - Sub-Sublist Item 1
+
+Tutorial.DialogSelector GetDialog 1 2
 
 
