@@ -6,18 +6,26 @@ Requirements:
 		Plugin Settings:
 			Dialog Map
 				Map of objects containing a Map Id and a list of Npc data.
-				Npc data list is a list of objects containing the NPC Id and a list of that NPC's dialog
+
+				Npc data list is a list of objects containing the NPC Id and a list of that NPC's dialog data.
+
+				Dialog data list is a list of objects containing the dialog for an NPC along with the conditions (switch id list)
+				underwhich that dialog should be shown.
 				/*[
 					{
 						mapId: 1,
 						npcData: [
 							{
 								npcId: 1,
-								dialogList: ["TestDialog1", "TestDialog2]
+								dialogData: [
+									{
+										conditions: [1, 2, 3, 4],
+										dialog: "Test Dialog 1"
+									},
+									...
+								]
 							},
-							{
-
-							}
+							...
 						],
 					},
 					{
@@ -30,6 +38,11 @@ Requirements:
 			Default Dialog
 				Text
 				Used when no valid dialog can be selected
+
+			Unconfigured NPC Dialog
+				Text
+				Used when the Dialog System is invoked on an npc or on a npc in a map
+				that is not configuired in the plugin.
 
 			Enable Dialog System
 				Boolean
