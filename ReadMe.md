@@ -23,34 +23,34 @@ This section contains information relating to plugin settings and commands used 
 ### Plugin Settings
 
 #### Enable Dialog System
-** This setting controls whether or not the dialog system is enabled when the game starts.  Set this to true to enable the system at the start of the game. **
-** Boolean **
-** true **
+**This setting controls whether or not the dialog system is enabled when the game starts.  Set this to true to enable the system at the start of the game.**  
+**Boolean**  
+**true**
 
 
 #### Text Game Variable
-** This setting sets the game variable that will be used to store the current npc dialog to display.  **
-** Required **
-** Game Variable **
-** 001 **
+**This setting sets the game variable that will be used to store the current npc dialog to display.**  
+**Required**  
+**Game Variable**  
+**001**
 
 
 #### Map Data
-** This setting contains the configuration for each map and each npc on those maps that the Dialog System should apply to.  For more information on how to configure this setting, see the Configuration Settings section below. **
-** Required **
-** Object **
+**This setting contains the configuration for each map and each npc on those maps that the Dialog System should apply to.  For more information on how to configure this setting, see the Configuration Settings section below.**  
+**Required**  
+**Object**
 
 
 #### Default Dialog
-** This setting sets the dialog shown by an NPC when there is no valid dialog available to be shown.  This only applies to configured NPCs. **
-** Text **
-** Hello, \\P[1]
+**This setting sets the dialog shown by an NPC when there is no valid dialog available to be shown.  This only applies to configured NPCs.**  
+**Text**  
+**Hello, \\P[1]**
 
 
 #### Unconfigured NPC Dialog
-** This setting sets the dialog to be displayed when calling the plugin command from an NPC that either has not figured for the current map or whose map is not configured in the Map Data plugin setting.  This is meant to be used as a development debugging tool, an option to turn this output off or on will be added in a future version.  **
-** Text **
-** This map or npc has not been configured in the Dialog Selector plugin configuration data. **
+**This setting sets the dialog to be displayed when calling the plugin command from an NPC that either has not figured for the current map or whose map is not configured in the Map Data plugin setting.  This is meant to be used as a development debugging tool, an option to turn this output off or on will be added in a future version.**  
+**Text**  
+**This map or npc has not been configured in the Dialog Selector plugin configuration data.**
 
 
 
