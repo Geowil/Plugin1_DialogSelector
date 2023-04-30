@@ -9,6 +9,11 @@ Plugin Version: 0.1
 
 [Plugin Project](http://www.lmpgames.com/plugins/projects/TutorialPlugin1_DialogSelector_Project_V0.1.zip)
 
+Conflicts: None identified thus far
+
+Terms of Use: Free non-commercially or commercially; just give credit
+
+
 
 ## Installing the plugin
 Download the plugin file either using the Demo or Project links above or from the repository.  Please the .js file into your js/Plugins folder and then add the plugin into your project in the Plugin Manager screen.
